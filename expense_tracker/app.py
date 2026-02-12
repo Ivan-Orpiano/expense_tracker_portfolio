@@ -41,4 +41,56 @@ def index():
 def add_expense():
     #for adding new expenses
     if request.method == 'POST':
-        pass
+        #get form data
+        amount = request.form.get('amount')
+        category = request.form.get('category')
+        description = request.form.get('description')
+        date_str = request.form.get('date')
+        
+        #validate data
+        if not amount or not category or not date_str:
+            flash('Please fill in all required fields!', 'error')
+            return redirect(url_for('add_expense'))
+        
+        try:
+            amount = float(amount)
+            #convert date string to date object
+            date=datetime.strptime(date_str, '%Y-%m-%d').date()
+            
+            new_expense = Expense(
+                amount = amount,
+                category = category,
+                description = description,
+                date = date
+            )
+            
+            #add to database
+            db.session.add(new_expense)
+            db.session.commit()
+            
+            flash('Expense added successfully!', 'success')
+            return redirect(url_for(index))
+        
+        except ValueError:
+            flash('Invalid amount or data format!', 'error')
+            return redirect(url_for('add_expense'))
+    #GET request - show the form
+    return render_template('add_expense.html')
+
+@app.route('/delete/<int:expense_id>')
+def delete_expense(expense_id):
+    #delete an expense
+    expense = Expense.query.get_or_404(expense_id)
+    
+    try:
+        db.session.delete(expense)
+        db.session.commit()
+        flash('Expense delete successfully!', 'success')
+    except:
+        flash('Error deleting expense!', 'error')
+        
+    return redirect(url_for('index'))
+
+#run app
+if __name__ == '__main__':
+    app.run(debug=True)
