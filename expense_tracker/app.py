@@ -6,9 +6,9 @@ from datetime import datetime
 app = Flask(__name__)
 
 #for configuration
-app.config[''] = 'secret key in production' # FOR FLASH MESSAGES
-app.config[''] = 'sqlite:///expenses.db' # SQLITE DATABASE
-app.config['SQLALCHEMY'] = False
+app.config['SECRET_KEY'] = 'secret key in production' # FOR FLASH MESSAGES
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///expenses.db' # SQLITE DATABASE
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 #initialize database
 db = SQLAlchemy(app)
@@ -29,7 +29,7 @@ class Expense(db.Model):
         return f'<Expense {self.category}: ${self.amount}>'
     
 with app.app_context():
-    db.create_all
+    db.create_all()
     
 @app.route('/')
 def index():
@@ -72,7 +72,7 @@ def add_expense():
             db.session.commit()
             
             flash('Expense added successfully!', 'success')
-            return redirect(url_for(index))
+            return redirect(url_for('index'))
         
         except ValueError:
             flash('Invalid amount or data format!', 'error')
