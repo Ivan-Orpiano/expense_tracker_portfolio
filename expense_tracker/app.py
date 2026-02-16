@@ -53,7 +53,7 @@ def get_date_range(filter_type):
 
 # Routes
 @app.route('/')
-def index():
+def expense_index():
     # home page to displays all expenses
     # Get filter parameters
     category_filter = request.args.get('category', '')
@@ -92,7 +92,7 @@ def index():
     categories = db.session.query(Expense.category).distinct().all()
     categories = [cat[0] for cat in categories]
     
-    return render_template('index.html', 
+    return render_template('expense_index.html', 
                          expenses=expenses, 
                          total=total,
                          categories=categories,
@@ -127,7 +127,7 @@ def add_expense():
             db.session.commit()
             
             flash('Expense added successfully!', 'success')
-            return redirect(url_for('index'))
+            return redirect(url_for('expense_index'))
             
         except ValueError:
             flash('Invalid amount or date format!', 'error')
@@ -159,7 +159,7 @@ def edit_expense(expense_id):
             db.session.commit()
             
             flash('Expense updated successfully!', 'success')
-            return redirect(url_for('index'))
+            return redirect(url_for('expense_index'))
             
         except ValueError:
             flash('Invalid amount or date format!', 'error')
@@ -179,7 +179,7 @@ def delete_expense(expense_id):
     except:
         flash('Error deleting expense!', 'error')
     
-    return redirect(url_for('index'))
+    return redirect(url_for('expense_index'))
 
 @app.route('/statistics')
 def statistics():
@@ -253,6 +253,6 @@ def export_csv():
         headers={'Content-Disposition': 'attachment; filename=expenses.csv'}
     )
 
-# Run the app
+
 if __name__ == '__main__':
     app.run(debug=True)

@@ -37,10 +37,19 @@
                         id = "description"
                         name = "description"
                         placeholder = "Coffee at Starbucks">
+
+                <div class = "form-group">
+                <label for = "date">Date *</label>
+                <input type = "date"
+                        id = "date"
+                        name = "date"
+                        required>
+            </div>
+            
             </div>
             <div class = "form-actions">
                 <button type = "submit" class = "btn-primary">Save Expense</button>
-                <a href="{{ url_for('index') }}" class = "btn-secondary">Cancel</a>
+                <a href="{{ url_for('expense_index') }}" class = "btn-secondary">Cancel</a>
             </div>
         </form>
     </div>

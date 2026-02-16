@@ -13,7 +13,7 @@
 <!-- Filter Section -->
 <div class="filter-section">
     <h3>Filter Expenses</h3>
-    <form method="GET" action="{{ url_for('index') }}" class="filter-form">
+    <form method="GET" action="{{ url_for('expense_index') }}" class="filter-form">
         <div class="filter-row">
             <div class="filter-group">
                 <label for="category">Category</label>
@@ -51,7 +51,7 @@
             <div class="filter-group">
                 <label>&nbsp;</label>
                 <button type="submit" class="btn-filter">Apply</button>
-                <a href="{{ url_for('index') }}" class="btn-clear">Clear</a>
+                <a href="{{ url_for('expense_index') }}" class="btn-clear">Clear</a>
             </div>
         </div>
     </form>
@@ -103,7 +103,7 @@
     {% else %}
         <div class="empty-state">
             <p>No expenses found matching your filters.</p>
-            <a href="{{ url_for('index') }}" class="btn-secondary">Clear Filters</a>
+            <a href="{{ url_for('expense_index') }}" class="btn-secondary">Clear Filters</a>
             <a href="{{ url_for('add_expense') }}" class="btn-primary">Add Expense</a>
         </div>
     {% endif %}
